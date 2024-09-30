@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% block content %}
+<h2>My Notes</h2>
+<a href="{% url 'note_create' %}" class="btn btn-primary mb-3"
+	>Create New Note</a
+>
+<div class="list-group">
+	{% for note in notes %}
+	<a
+		href="{% url 'note_detail' note.id %}"
+		class="list-group-item list-group-item-action {% if note.is_completed %}list-group-item-success{% endif %}">
+		<h5 class="mb-1">{{ note.title }}</h5>
+		<p class="mb-1">{{ note.content|truncatewords:20 }}</p>
+		<small
+			>Created: {{ note.created_at }} | Due: {{ note.due_date }} | Alarm: {{
+			note.alarm_time }}</small
+		>
+	</a>
+	{% empty %}
+	<p class="text-muted">No notes available.</p>
+	{% endfor %}
+</div>
+{% endblock %}

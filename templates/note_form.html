@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+	<h2>{% if form.instance.id %}Edit Note{% else %}Create Note{% endif %}</h2>
+	<form method="post" enctype="multipart/form-data">
+		<!-- Add enctype for file upload -->
+		{% csrf_token %}
+		<div class="mb-3">
+			<label for="{{ form.title.id_for_label }}" class="form-label"
+				>Title</label
+			>
+			{{ form.title }} {% if form.title.errors %}
+			<div class="text-danger">{{ form.title.errors }}</div>
+			{% endif %}
+		</div>
+		<div class="mb-3">
+			<label for="{{ form.content.id_for_label }}" class="form-label"
+				>Content</label
+			>
+			{{ form.content }} {% if form.content.errors %}
+			<div class="text-danger">{{ form.content.errors }}</div>
+			{% endif %}
+		</div>
+		<div class="mb-3">
+			<label for="{{ form.image.id_for_label }}" class="form-label"
+				>Image (optional)</label
+			>
+			{{ form.image }} {% if form.image.errors %}
+			<div class="text-danger">{{ form.image.errors }}</div>
+			{% endif %}
+		</div>
+		<div class="mb-3">
+			<label for="{{ form.due_date.id_for_label }}" class="form-label"
+				>Due Date (optional)</label
+			>
+			{{ form.due_date }} {% if form.due_date.errors %}
+			<div class="text-danger">{{ form.due_date.errors }}</div>
+			{% endif %}
+		</div>
+		<div class="mb-3">
+			<label for="{{ form.alarm_time.id_for_label }}" class="form-label"
+				>Alarm Time (optional)</label
+			>
+			{{ form.alarm_time }} {% if form.alarm_time.errors %}
+			<div class="text-danger">{{ form.alarm_time.errors }}</div>
+			{% endif %}
+		</div>
+		<button type="submit" class="btn btn-primary">Save</button>
+		<a href="{% url 'note_list' %}" class="btn btn-secondary">Cancel</a>
+	</form>
+</div>
+{% endblock %}
