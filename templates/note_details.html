@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block content %}
+<h2>{{ note.title }}</h2>
+<p>{{ note.content }}</p>
+
+{% if note.image %}
+<img src="{{ note.image.url }}" alt="{{ note.title }}" />
+{% endif %}
+
+<p>Created at: {{ note.created_at }}</p>
+<p>Updated at: {{ note.updated_at }}</p>
+
+<form action="{% url 'note_check_off' note.id %}" method="post">
+	{% csrf_token %}
+	<label>
+		<input
+			type="checkbox"
+			name="is_completed"
+			{%
+			if
+			note.is_completed
+			%}checked{%
+			endif
+			%}
+			onchange="this.form.submit();" />
+		{{ note.is_completed|yesno:"Complete,Incomplete" }}
+	</label>
+</form>
+
+{% if note.due_date %}
+<p>Due Date: {{ note.due_date }}</p>
+{% endif %} {% if note.alarm_time %}
+<p>Alarm Time: {{ note.alarm_time }}</p>
+{% endif %}
+
+<h3>Share this note:</h3>
+<input
+	type="text"
+	value="{{ request.build_absolute_uri(note.get_absolute_url) }}"
+	readonly />
+
+<a href="{% url 'note_update' note.id %}">Edit</a>
+<a href="{% url 'note_delete' note.id %}">Delete</a>
+{% endblock %}
