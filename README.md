@@ -54,4 +54,5 @@ http://localhost:8000
 ```
 
 ## View
-[text](<../../Videos/Screencasts/Screencast from 2024-09-30 16-17-53.webm>)
+[Screencast from 2024-09-30 16-17-53.webm](https://github.com/user-attachments/assets/9f5a95d0-eabb-4798-abf4-6dca14fbbb4b)
+
