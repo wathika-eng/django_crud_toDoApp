@@ -53,7 +53,5 @@ python manage.py runserver
 http://localhost:8000
 ```
 
-## Screenshots
-
-![view](image.png)
-![mobile_view](127.0.0.1_8000_login_.png)
+## View
+[text](<../../Videos/Screencasts/Screencast from 2024-09-30 16-17-53.webm>)
