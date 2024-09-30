@@ -3,7 +3,7 @@
 <p>{{ note.content }}</p>
 
 {% if note.image %}
-<img src="{{ note.image.url }}" alt="{{ note.title }}" />
+<img src="{{ note.image }}" alt="{{ note.title }}" />
 {% endif %}
 
 <p>Created at: {{ note.created_at }}</p>

@@ -7,16 +7,16 @@ from datetime import timezone
 class Note(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-    image = models.ImageField(upload_to="notes/", blank=True, null=True)
+    image = models.ImageField(upload_to="media/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)  
     is_completed = models.BooleanField(default=False)
     due_date = models.DateTimeField(blank=True, null=True)
     alarm_time = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return f"Note: {self.title} - {self.image}"
 
     def get_absolute_url(self):
         return reverse('note_detail', args=[str(self.id)]) 

@@ -1,7 +1,6 @@
 from django import forms
 from .models import Note
 
-
 class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
@@ -13,3 +12,7 @@ class NoteForm(forms.ModelForm):
             "due_date": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
             "alarm_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
         }
+
+
+
+ 
