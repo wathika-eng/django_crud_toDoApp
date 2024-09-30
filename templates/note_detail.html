@@ -10,7 +10,7 @@
 <p>Updated at: {{ note.updated_at }}</p>
 
 <form action="{% url 'note_check_off' note.id %}" method="post">
-	{% csrf_token %}
+	{% csrf_token %} {% if user.is_authenticated %}
 	<label>
 		<input
 			type="checkbox"
@@ -24,6 +24,12 @@
 			onchange="this.form.submit();" />
 		{{ note.is_completed|yesno:"Complete,Incomplete" }}
 	</label>
+	{% else %}
+	<span class="text-muted"
+		>Please <a href="{% url 'login' %}">login</a> to mark this note as
+		complete.</span
+	>
+	{% endif %}
 </form>
 
 {% if note.due_date %}
