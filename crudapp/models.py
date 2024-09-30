@@ -44,26 +44,21 @@ class Note(models.Model):
         return f"/note/{self.id}/"
 
     def is_overdue(self):
-
         return self.due_date and self.due_date < timezone.now()
 
     def is_in_trash(self):
-
         return self.deleted_at is not None
 
     def permanently_delete_after_7_days(self):
-
         if self.deleted_at:
             return self.deleted_at + timedelta(days=7) <= timezone.now()
 
     def restore(self):
-
         self.deleted_at = None
         self.save()
 
 
 @receiver(post_save, sender=Note)
 def auto_delete_notes(sender, instance, **kwargs):
-
     if instance.is_in_trash() and instance.permanently_delete_after_7_days():
         instance.delete()

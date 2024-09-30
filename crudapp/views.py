@@ -23,7 +23,6 @@ def landing_page(request):
 
 @login_required
 def note_list(request):
-
     notes = Note.objects.filter(user=request.user, deleted_at__isnull=True)
 
     priority = request.GET.get("priority")
