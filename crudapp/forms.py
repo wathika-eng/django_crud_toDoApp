@@ -12,7 +12,3 @@ class NoteForm(forms.ModelForm):
             "due_date": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
             "alarm_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
         }
-
-
-
- 

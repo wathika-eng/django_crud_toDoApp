@@ -3,8 +3,14 @@
 <p>{{ note.content }}</p>
 
 {% if note.image %}
-<img src="{{ note.image }}" alt="{{ note.title }}" />
+<img src="{{ note.image.url }}" alt="{{ note.title }}" class="dp-image" />
 {% endif %}
+
+<div id="imageModal" class="modal" style="display: none;"></div>
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage" />
+    <div id="caption"></div>
+</div>
 
 <p>Created at: {{ note.created_at }}</p>
 <p>Updated at: {{ note.updated_at }}</p>
@@ -39,8 +45,59 @@
 {% endif %}
 
 <h3>Share this note:</h3>
-<!--  -->
-<a href="{{ note.get_absolute_url }}">View Note</a>
+
+<a href="javascript:void(0);" class="copy-url-btn" data-url="{{ get_absolute_url }}">
+    Copy URL
+</a>
+<!-- <p>Url is {{note.build_url}}</p> -->
+<span class="copy-success-message" style="display: none; color: green;">URL copied!</span>
+
 <a href="{% url 'note_update' note.id %}">Edit</a>
 <a href="{% url 'note_delete' note.id %}">Delete</a>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+    const copyButtons = document.querySelectorAll('.copy-url-btn');
+
+    copyButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const url = this.getAttribute('data-url');
+            
+            navigator.clipboard.writeText(url).then(function () {
+               
+                const successMessage = button.nextElementSibling;
+                successMessage.style.display = 'inline';
+                
+               
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            }, function (err) {
+                console.error('Could not copy text: ', err);
+            });
+        });
+    });
+
+function openModal(imageUrl) {
+    const modal = document.getElementById("imageModal");
+    const modalImage = document.getElementById("modalImage");
+    modal.style.display = "block";
+    modalImage.src = imageUrl;
+}
+
+function closeModal() {
+    const modal = document.getElementById("imageModal");
+    modal.style.display = "none";
+}
+
+
+window.onclick = function(event) {
+    const modal = document.getElementById("imageModal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}
+
+});
+</script>
 {% endblock %}

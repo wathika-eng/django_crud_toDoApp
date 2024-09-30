@@ -1,0 +1,53 @@
+<!-- navbar.html -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+	<div class="container">
+		<a class="navbar-brand fw-bold text-primary" href="{% url 'note_list' %}">Jipange</a>
+		<button
+			class="navbar-toggler"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#navbarNav"
+			aria-controls="navbarNav"
+			aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				{% if user.is_authenticated %}
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'note_list' %}">My Tasks</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'note_list' %}">Create New Task</a>
+				</li>
+                <li class="nav-item">
+					<a class="nav-link" href="{% url 'trash' %}">Previous Tasks</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'logout' %}">Logout</a>
+				</li>
+				{% else %}
+				<li class="nav-item">
+					<a
+						class="nav-link"
+						href="#"
+						data-bs-toggle="modal"
+						data-bs-target="#loginModal"
+						>Login</a
+					>
+				</li>
+				<li class="nav-item">
+					<a
+						class="nav-link"
+						href="#"
+						data-bs-toggle="modal"
+						data-bs-target="#signupModal"
+						>Sign Up</a
+					>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>

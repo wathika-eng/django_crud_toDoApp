@@ -1,0 +1,112 @@
+<div
+	class="modal fade"
+	id="loginModal"
+	tabindex="-1"
+	aria-labelledby="loginModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="loginModalLabel">
+					Login to Stay Organized
+				</h5>
+				<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form method="POST" action="{% url 'login' %}">
+					{% csrf_token %}
+					<div class="mb-3">
+						<label for="username" class="form-label">Username</label>
+						<input
+							type="text"
+							class="form-control"
+							id="username"
+							name="username"
+							required />
+					</div>
+					<div class="mb-3">
+						<label for="password" class="form-label">Password</label>
+						<input
+							type="password"
+							class="form-control"
+							id="password"
+							name="password"
+							required />
+					</div>
+					<div class="d-grid gap-2">
+						<button type="submit" class="btn btn-primary">Login</button>
+					</div>
+				</form>
+				<p class="text-center mt-3">
+					Don't have an account? <a href="#" id="showSignup">Sign up</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div
+	class="modal fade"
+	id="signupModal"
+	tabindex="-1"
+	aria-labelledby="signupModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="signupModalLabel">
+					Sign Up for Stay Organized
+				</h5>
+				<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form method="POST" action="{% url 'signup' %}">
+					{% csrf_token %}
+					<div class="mb-3">
+						<label for="usernameSignup" class="form-label">Username</label>
+						<input
+							type="text"
+							class="form-control"
+							id="usernameSignup"
+							name="username"
+							required />
+					</div>
+					<div class="mb-3">
+						<label for="passwordSignup" class="form-label">Password</label>
+						<input
+							type="password"
+							class="form-control"
+							id="passwordSignup"
+							name="password1"
+							required />
+					</div>
+					<div class="mb-3">
+						<label for="passwordConfirmSignup" class="form-label"
+							>Confirm Password</label
+						>
+						<input
+							type="password"
+							class="form-control"
+							id="passwordConfirmSignup"
+							name="password2"
+							required />
+					</div>
+					<div class="d-grid gap-2">
+						<button type="submit" class="btn btn-primary">Sign Up</button>
+					</div>
+				</form>
+				<p class="text-center mt-3">
+					Already have an account? <a href="#" id="showLogin">Login</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

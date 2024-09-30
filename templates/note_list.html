@@ -1,22 +1,48 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+{% block content %}
 <h2>My Notes</h2>
-<a href="{% url 'note_create' %}" class="btn btn-primary mb-3"
-	>Create New Note</a
->
+
+
+<form method="GET" action="{% url 'note_list' %}" class="mb-3">
+    <input type="text" name="search" placeholder="Search notes..." class="form-control mb-2" value="{{ request.GET.search }}">
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+
+<div class="mb-3">
+    <span>Sort by:</span>
+    <a href="?sort=created_at" class="btn btn-link">Creation Date</a>
+    <a href="?sort=due_date" class="btn btn-link">Due Date</a>
+    <a href="?sort=is_completed" class="btn btn-link">Status</a>
+</div>
+
+<div class="mb-3">
+    <span>Filter:</span>
+    <a href="?filter=all" class="btn btn-link">All</a>
+    <a href="?filter=completed" class="btn btn-link">Completed</a>
+    <a href="?filter=incomplete" class="btn btn-link">Incomplete</a>
+</div>
+
+<a href="{% url 'note_create' %}" class="btn btn-primary mb-3">Create New Note</a>
+
 <div class="list-group">
-	{% for note in notes %}
-	<a
-		href="{% url 'note_detail' note.id %}"
-		class="list-group-item list-group-item-action {% if note.is_completed %}list-group-item-success{% endif %}">
-		<h5 class="mb-1">{{ note.title }}</h5>
-		<p class="mb-1">{{ note.content|truncatewords:20 }}</p>
-		<small
-			>Created: {{ note.created_at }} | Due: {{ note.due_date }} | Alarm: {{
-			note.alarm_time }}</small
-		>
-	</a>
-	{% empty %}
-	<p class="text-muted">No notes available.</p>
-	{% endfor %}
+    {% for note in notes %}
+    <a
+        href="{% url 'note_detail' note.id %}"
+        class="list-group-item list-group-item-action {% if note.is_completed %}list-group-item-success{% endif %}">
+        <h5 class="mb-1">{{ note.title }}</h5>
+        <p class="mb-1">{{ note.content|truncatewords:20 }}</p>
+        <small>
+            Created: {{ note.created_at }} | Due: {{ note.due_date }} | Alarm: {{ note.alarm_time }}
+            {% if note.is_completed %}
+                | <strong>Status: Completed</strong>
+            {% else %}
+                | <strong>Status: Incomplete</strong>
+            {% endif %}
+        </small>
+    </a>
+    {% empty %}
+    <p class="text-muted">No notes available.</p>
+    {% endfor %}
 </div>
 {% endblock %}
