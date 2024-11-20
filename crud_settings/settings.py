@@ -21,10 +21,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
-print(DEBUG)
-ALLOWED_HOSTS = ["*"]
+# print(DEBUG)
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "django-crud-todoapp-37wd.onrender.com"]
 
-
+CSRF_ALLOW_ORIGIN = "https://django-crud-todoapp-37wd.onrender.com"
 # Application definition
 
 INSTALLED_APPS = [
