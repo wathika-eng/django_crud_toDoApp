@@ -1,50 +1,80 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+{% block content %}
 <div class="container">
-	<h2>{% if form.instance.id %}Edit Note{% else %}Create Note{% endif %}</h2>
-	<form method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-		<div class="mb-3">
-			<label for="{{ form.title.id_for_label }}" class="form-label"
-				>Title</label
-			>
-			{{ form.title }} {% if form.title.errors %}
-			<div class="text-danger">{{ form.title.errors }}</div>
-			{% endif %}
-		</div>
-		<div class="mb-3">
-			<label for="{{ form.content.id_for_label }}" class="form-label"
-				>Content</label
-			>
-			{{ form.content }} {% if form.content.errors %}
-			<div class="text-danger">{{ form.content.errors }}</div>
-			{% endif %}
-		</div>
-		<div class="mb-3">
-			<label for="{{ form.image.id_for_label }}" class="form-label"
-				>Image (optional)</label
-			>
-			{{ form.image }} {% if form.image.errors %}
-			<div class="text-danger">{{ form.image.errors }}</div>
-			{% endif %}
-		</div>
-		<div class="mb-3">
-			<label for="{{ form.due_date.id_for_label }}" class="form-label"
-				>Due Date (optional)</label
-			>
-			{{ form.due_date }} {% if form.due_date.errors %}
-			<div class="text-danger">{{ form.due_date.errors }}</div>
-			{% endif %}
-		</div>
-		<div class="mb-3">
-			<label for="{{ form.alarm_time.id_for_label }}" class="form-label"
-				>Alarm Time (optional)</label
-			>
-			{{ form.alarm_time }} {% if form.alarm_time.errors %}
-			<div class="text-danger">{{ form.alarm_time.errors }}</div>
-			{% endif %}
-		</div>
-		<button type="submit" class="btn btn-primary">Save</button>
-		<a href="{% url 'note_list' %}" class="btn btn-secondary">Cancel</a>
-	</form>
+    <h2>{% if form.instance.id %}Edit Note{% else %}Create Note{% endif %}</h2>
+
+    <form id="noteForm" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div class="text-danger">{{ form.title.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ form.content.id_for_label }}" class="form-label">Content</label>
+            {{ form.content }}
+            {% if form.content.errors %}
+                <div class="text-danger">{{ form.content.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ form.image.id_for_label }}" class="form-label">Image (optional)</label>
+            {{ form.image }}
+            {% if form.image.errors %}
+                <div class="text-danger">{{ form.image.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ form.due_date.id_for_label }}" class="form-label">Due Date (optional)</label>
+            {{ form.due_date }}
+            {% if form.due_date.errors %}
+                <div class="text-danger">{{ form.due_date.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ form.alarm_time.id_for_label }}" class="form-label">Alarm Time (optional)</label>
+            {{ form.alarm_time }}
+            {% if form.alarm_time.errors %}
+                <div class="text-danger">{{ form.alarm_time.errors }}</div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% url 'note_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
 </div>
+<script>
+    document.getElementById("noteForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const isAuthenticated = "{{ user.is_authenticated }}" === "True";
+        if (isAuthenticated) {
+            this.submit();
+        } else {
+            // Save note to localStorage for anonymous users
+            const formData = new FormData(this);
+            const note = {
+                title: formData.get("title"),
+                content: formData.get("content"),
+                image: formData.get("image"),
+                due_date: formData.get("due_date"),
+                alarm_time: formData.get("alarm_time"),
+                created_at: new Date().toISOString(),
+            };
+
+            const notes = JSON.parse(localStorage.getItem("anonymous_notes")) || [];
+            notes.push(note);
+            localStorage.setItem("anonymous_notes", JSON.stringify(notes));
+
+            alert("Note saved locally for anonymous user.");
+            this.reset();
+        }
+    });
+</script>
 {% endblock %}

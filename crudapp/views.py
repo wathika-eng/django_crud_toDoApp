@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+
+from crud_settings.settings import LOGIN_REDIRECT_URL
 from .models import Note, Tag
 from .forms import NoteForm
 from django.contrib.auth.forms import UserCreationForm
@@ -18,7 +20,36 @@ def test_view(request):
 
 
 def landing_page(request):
+    if request.user.is_authenticated:
+        return redirect("note_list")
     return render(request, "base.html")
+
+
+def signup(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("note_list")
+    else:
+        form = UserCreationForm()
+    return render(request, "account/signup.html", {"form": form})
+
+
+class CustomLoginView(LoginView):
+    template_name = "account/login.html"
+
+    def get_success_url(self):
+        # Redirect to the "next" parameter or LOGIN_REDIRECT_URL
+        # "next", self.get_redirect_url() or
+        return self.request.GET.get(LOGIN_REDIRECT_URL)
+
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect("landing_page")
 
 
 @login_required
@@ -142,27 +173,6 @@ def note_permanent_delete(request, note_id):
         note.delete()
         return redirect("trash")
     return render(request, "note_permanent_delete.html", {"note": note})
-
-
-def signup(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect("note_list")
-    else:
-        form = UserCreationForm()
-    return render(request, "account/signup.html", {"form": form})
-
-
-class CustomLoginView(LoginView):
-    template_name = "account/login.html"
-
-
-def logout_view(request):
-    logout(request)
-    return redirect("login")
 
 
 def error_404(request, exception):

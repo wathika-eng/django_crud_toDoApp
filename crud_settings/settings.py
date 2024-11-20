@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -6,7 +7,11 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+from os import getenv
+from dotenv import load_dotenv
 
+# Replace the DATABASES section of your settings.py with this
+tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -34,6 +39,7 @@ INSTALLED_APPS = [
     # THIRD PARTY APPS
     "crispy_forms",
     "crispy_bootstrap5",
+    "widget_tweaks",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -86,26 +92,14 @@ if DEBUG:
 else:
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "NAME": os.getenv("DB_NAME"),
-            "USER": os.getenv("DB_USER"),
-            "PASSWORD": os.getenv("DB_PASSWORD"),
-            "HOST": os.getenv("DB_HOST"),
-            "PORT": os.getenv("DB_PORT"),
-            "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": tmpPostgres.path.replace("/", ""),
+            "USER": tmpPostgres.username,
+            "PASSWORD": tmpPostgres.password,
+            "HOST": tmpPostgres.hostname,
+            "PORT": 5432,
         }
     }
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": os.getenv("DB_NAME"),
-#         "USER": os.getenv("DB_USER"),
-#         "PASSWORD": os.getenv("DB_PASSWORD"),
-#         "HOST": os.getenv("DB_HOST"),
-#         "PORT": os.getenv("DB_PORT"),
-#         "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
-#     }
-# }
 LOGIN_REDIRECT_URL = "note_list"
 LOGOUT_REDIRECT_URL = "login"
 LOGIN_URL = "login"
@@ -142,7 +136,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-STATIC_URL = "/static/"
+# STATIC_URL = "/static/"
 
 MEDIA_URL = "/media/"
 
@@ -154,6 +148,9 @@ STATIC_ROOT = os.path.join(VENV_PATH, "static_root")
 
 MEDIA_ROOT = os.path.join(VENV_PATH, "media_root")
 
+# STATIC_ROOT = BASE_DIR / "productionfiles"
+
+STATIC_URL = "static/"
 # STATIC_URL = "/static/"
 # # STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # # STATIC_ROOT = BASE_DIR / "static"
