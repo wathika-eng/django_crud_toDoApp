@@ -185,5 +185,7 @@ def note_permanent_delete(request, note_id):
     return render(request, "note_permanent_delete.html", {"note": note})
 
 
-def error_404(request, exception):
-    return redirect("note_list", status=404)
+# def error_404(request, exception):
+#     return redirect("note_list", status=404)
+def page_not_found(request, exception):
+    return render(request, "404.html", status=404)
