@@ -100,7 +100,7 @@ else:
             "PORT": 5432,
         }
     }
-LOGIN_REDIRECT_URL = "note_list"
+LOGIN_REDIRECT_URL = "/todo/"
 LOGOUT_REDIRECT_URL = "login"
 LOGIN_URL = "login"
 # Password validation

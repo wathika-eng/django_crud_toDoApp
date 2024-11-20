@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
+from crud_settings import settings
 from crud_settings.settings import LOGIN_REDIRECT_URL
 from .models import Note, Tag
 from .forms import NoteForm
@@ -22,10 +23,13 @@ def test_view(request):
 def landing_page(request):
     if request.user.is_authenticated:
         return redirect("note_list")
-    return render(request, "base.html")
+    else:
+        return render(request, "base.html")
 
 
 def signup(request):
+    if request.user.is_authenticated:
+        return redirect("note_list")
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -41,9 +45,15 @@ class CustomLoginView(LoginView):
     template_name = "account/login.html"
 
     def get_success_url(self):
-        # Redirect to the "next" parameter or LOGIN_REDIRECT_URL
-        # "next", self.get_redirect_url() or
-        return self.request.GET.get(LOGIN_REDIRECT_URL)
+        next_url = self.request.GET.get("next")
+        if next_url:
+            return next_url
+        return settings.LOGIN_REDIRECT_URL
+
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect("note_list")
+        return super().dispatch(*args, **kwargs)
 
 
 @login_required

@@ -2,12 +2,10 @@
 {% block content %}
 <h2>My Notes</h2>
 
-
 <form method="GET" action="{% url 'note_list' %}" class="mb-3">
     <input type="text" name="search" placeholder="Search notes..." class="form-control mb-2" value="{{ request.GET.search }}">
     <button type="submit" class="btn btn-primary">Search</button>
 </form>
-
 
 <div class="mb-3">
     <span>Sort by:</span>
